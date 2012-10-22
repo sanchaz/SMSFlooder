@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, SMSFlooderActivity!</string>
+    <string name="app_name">SMS Flooder</string>
+    <string name="phone_number">XXXXXXXXX</string>
+    <string name="phone_number_label">Phone Number to Flood</string>
+    <string name="message_label">Message to Send</string>
+    <string name="message_example">Message&#8230;</string>
+    <string name="quantity_label">Quantity:</string>
+    <string name="quantity_example">1</string>
+    <string name="send">Send</string>
+    <string name="sent_label">Messages Sent:</string>
+    <string name="sent">0/0</string>
+
+</resources>
