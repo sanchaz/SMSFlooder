@@ -24,24 +24,20 @@ public class SMSSendThread extends Thread {
 
 
 	public void run() {
-		//Log.d("Debug", "run 1");
 		try {
 			synchronized (this) {
 				this.wait();
 			}
 		} catch (InterruptedException e1) {
-			// shit just went wrong return
 			return;
 		}
-		//Log.d("Debug", "run 2");
+		
 		while(!end) {
-			//Log.d("Debug", "run 3");
 			while(mSentMessages < quantity) {
 				next = false;
 				sendSMS(phoneNumber, message);
 				while(!next);
 			}
-			//Log.d("Debug", "run 4");
 
 			try {
 				synchronized (finished) {
@@ -53,14 +49,10 @@ public class SMSSendThread extends Thread {
 			} catch (InterruptedException e) {
 				//try again
 			}
-			//Log.d("Debug", "run 5");
 		}
-		//Log.d("Debug", "run 3");
 	}
 
 	private void sendSMS(String phoneNumber, String message) {
-
-		//Log.d("Debug", "sendSMS 1");
 
 		String SENT = "SMS_SENT";
 
@@ -97,7 +89,6 @@ public class SMSSendThread extends Thread {
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, sentPI, null);
 
-		//Log.d("Debug", "sendSMS 2");
 	}
 
 	public synchronized int incrementSentMessages() {
@@ -110,9 +101,7 @@ public class SMSSendThread extends Thread {
 	}
 
 	public void startExecution(String phoneNumber, String message, int quantity) {
-		//Log.d("Debug", "startExecution 1");
 		synchronized (finished) {
-			//Log.d("Debug", "startExecution 2");
 			if(!finished) {
 				Toast.makeText(mContext, "Still sending last batch...", Toast.LENGTH_SHORT).show();
 				return;
@@ -120,42 +109,28 @@ public class SMSSendThread extends Thread {
 			finished = false;
 		}
 		next = true;
-		//Log.d("Debug", "startExecution 3");
 
 		this.phoneNumber = phoneNumber;
 		this.message = message;
 		this.quantity = quantity;
 		this.mSentMessages = 0;
 		updateSent(mSentMessages);
-		//Log.d("Debug", "startExecution 4");
 		synchronized (this) {
 			this.notify();
 		}
-		//Log.d("Debug", "startExecution 5");
 	}
 
 	public void end() {
-		/*if(receiver != null) {
-			mContext.unregisterReceiver(receiver);
-		}*/
 	}
 	
 	public void exit() {
 		Log.d("Debug", "Thread destroyed!");
 		this.interrupt();
-		/*if(receiver != null) {
-			mContext.unregisterReceiver(receiver);
-		}*/
 	}
 
 	public boolean isFinished() {
 		return finished;
 	}
-
-	/*public void reset(SMSFlooderActivity context) {
-		this.mContext = context;
-		updateSent(mSentMessages);
-	}*/
 	
 	public SMSSendThread(SMSFlooderActivity context) {
 		this.mContext = context;
